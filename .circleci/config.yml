@@ -6,3 +6,6 @@ jobs:
     steps:
       - checkout
       - run: echo "Firzt Hello"
+      - run: echo "Firzt"
+      - run: echo "Hello"
+      - run: echo "Firzt Hello"

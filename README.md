@@ -9,3 +9,5 @@ If build and test:
 - pass, it's deployed to staging env for testing, following production env push and verification
 
 circleci pipline examples https://circleci.com/docs/2.0/sample-config/
+
+Feb1.19 circleci is set up to pull every commit from git

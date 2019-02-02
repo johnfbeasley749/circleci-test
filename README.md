@@ -10,4 +10,4 @@ If build and test:
 
 circleci pipline examples https://circleci.com/docs/2.0/sample-config/
 
-circleci is set up to pull every commit from git
+Feb1.19 circleci is set up to pull every commit from git

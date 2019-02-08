@@ -1,11 +1,83 @@
 version: 2
 jobs:
-  build:
-    docker:
-      - image: circleci/ruby:2.4.1
+  build-and-test:
+    macos:
+      xcode: "10.0.0"
+    working_directory: /Users/distiller/project
+    environment:
+      FL_OUTPUT_DIR: output
+      FASTLANE_LANE: test
+      GYM_CODE_SIGNING_IDENTITY: "iPhone Distribution: UnisonCare Corporation (SUBZ24DP5B)"
+
+    shell: /bin/bash --login -o pipefail
     steps:
       - checkout
-      - run: echo "Firzt Hello"
-      - run: echo "Firzt"
-      - run: echo "Hello"
-      - run: echo "Firzt Hello"
+      - run: sudo gem install bundler
+      - run: sudo gem install shenzhen
+      - run: sudo ARCHFLAGS=-Wno-error=unused-command-line-argument-hard-error-in-future gem install json
+      - run: bundle install
+      - run:
+          name: Fastlane
+          command: bundle exec fastlane $FASTLANE_LANE
+
+
+      - run: security find-identity -v -p codesigning
+      # - run: fastlane gym
+      # - run: ipa distribute:itunesconnect -i 1451326857 --upload --verbose
+      - store_artifacts:
+          path: output
+      - store_test_results:
+          path: output/scan
+          
+  adhoc:
+    macos:
+      xcode: "10.0.0"
+    working_directory: /Users/distiller/project
+    environment:
+      FL_OUTPUT_DIR: output
+      FASTLANE_LANE: adhoc
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - run: sudo fastlane update_fastlane
+      - run: sudo gem install bundler
+      - run: bundle install
+      - run:
+          name: Fastlane
+          command: bundle exec fastlane $FASTLANE_LANE
+      - store_artifacts:
+          path: output/Game.ipa
+
+  beta:
+    macos:
+      xcode: "10.0"
+    working_directory: /Users/distiller/project
+    environment:
+      FL_OUTPUT_DIR: output
+      FASTLANE_LANE: beta
+    shell: /bin/bash --login -o pipefail
+    steps:
+      - checkout
+      - run: sudo fastlane update_fastlane
+      - run: sudo gem install bundler
+      - run: bundle install
+      - run: security find-identity -v -p codesigning
+      - run:
+          name: Fastlane
+          command: bundle exec fastlane $FASTLANE_LANE
+      - store_artifacts:
+          path: output/Game.ipa
+
+workflows:
+  version: 2
+  build-test-adhoc:
+    jobs:
+      - build-and-test
+      - beta:
+          filters:
+            branches:
+              only: development
+          requires:
+            - build-and-test
+
+

@@ -1,0 +1,25 @@
+# fastlane/Fastfile
+default_platform :ios
+
+platform :ios do
+  before_all do
+    setup_circle_ci
+  end
+
+  desc "Runs all the tests"
+  lane :test do
+    scan
+  end
+
+  desc "Ad-hoc build"
+  lane :adhoc do
+    match(type: "adhoc",readonly: false)
+    gym(export_method: "ad-hoc")
+  end
+
+  lane :beta do
+    build_app
+    upload_to_testflight
+  end
+
+end

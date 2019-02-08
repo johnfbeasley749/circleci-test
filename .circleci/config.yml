@@ -61,6 +61,7 @@ jobs:
       - run: sudo fastlane update_fastlane
       - run: sudo gem install bundler
       - run: bundle install
+      - run: sudo fastlane match appstore
       # - run: sudo security import Certificates.p12 -k ~/Library/Keychains/login.keychain -P \123
       # - run: uuid=`grep UUID -A1 -a gamer.mobileprovision | grep -io "[-A-F0-9]\{36\}"`
       # - run: sudo mkdir /Library/MobileDevice/Provisioning\ Profiles/

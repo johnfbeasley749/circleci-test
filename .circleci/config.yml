@@ -63,7 +63,7 @@ jobs:
       - run: bundle install
       # - run: sudo security import Certificates.p12 -k ~/Library/Keychains/login.keychain -P \123
       - run: uuid=`grep UUID -A1 -a gamer.mobileprovision | grep -io "[-A-F0-9]\{36\}"`
-      - run: sudo mkdir ~/Library/MobileDevice/Provisioning\ Profiles/
+      - run: sudo mkdir /Library/MobileDevice/Provisioning\ Profiles/
       - run: cp gamer.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
       - run: security find-identity -v -p codesigning
       - run:

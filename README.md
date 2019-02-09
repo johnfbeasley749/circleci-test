@@ -1,13 +1,15 @@
-# CICDtestapp: build, test, deploy, mesure 
-this is a test application to verify automated steps for: commit, build, test and deploy process
+# ios-game
 
-Application is a simple "hello world" app for testing CI/CD pipeline implementation.
-1. developer commits to a shared mainline
-2. commit triggers automated build and test
-If build and test:
-- fails, it’s repaired imediately (back to step 1)
-- pass, it's deployed to staging env for testing, following production env push and verification
+[![CircleCI](https://circleci.com/gh/CircleCI-Public/circleci-demo-ios/tree/master.svg?style=svg)](https://circleci.com/gh/CircleCI-Public/circleci-demo-ios/tree/master)
 
-circleci pipline examples https://circleci.com/docs/2.0/sample-config/
+## Setup
 
-Feb1.19 circleci is set up to pull every commit from git
+1. `bundle install`
+1. Add your team data to `fastlane/Appfile`
+1. `bundle exec fastlane scan` to build the app and run tests
+1. `bundle exec fastlane match init` to set up code signing via Fastlane
+   Match
+1. Push the changes
+1. Create a CircleCI project for the repository
+1. Edit the `.circleci/config.yml` file as needed
+1. Done

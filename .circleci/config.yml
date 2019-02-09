@@ -2,7 +2,7 @@ version: 2
 jobs:
   build-and-test:
     macos:
-      xcode: "10.0.0"
+      xcode: "10.1.0"
     working_directory: /Users/distiller/project
     environment:
       FL_OUTPUT_DIR: output
@@ -50,26 +50,36 @@ jobs:
 
   beta:
     macos:
-      xcode: "10.0"
+      xcode: "10.1.0"
     working_directory: /Users/distiller/project
     environment:
       FL_OUTPUT_DIR: output
       FASTLANE_LANE: beta
+      GYM_CODE_SIGNING_IDENTITY: "iPhone Distribution: UnisonCare Corporation (SUBZ24DP5B)"
+
     shell: /bin/bash --login -o pipefail
     steps:
       - checkout
       - run: sudo fastlane update_fastlane
       - run: sudo gem install bundler
-      - run: bundle install
-      - run: sudo fastlane match appstore
-      # - run: sudo security import Certificates.p12 -k ~/Library/Keychains/login.keychain -P \123
-      # - run: uuid=`grep UUID -A1 -a gamer.mobileprovision | grep -io "[-A-F0-9]\{36\}"`
-      # - run: sudo mkdir /Library/MobileDevice/Provisioning\ Profiles/
-      # - run: cp gamer.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/$uuid.mobileprovision
+      # - run:
+      #     name: decode Certificates
+      #     # context: zubair
+      #     command: base64 -D -o Certificates.p12 <<< $Certificates
+      # - run:
+      #     name: make Provisioning Profiles directory
+      #     command: mkdir -pv ~/Library/MobileDevice/Provisioning\ Profiles/
+      # - run:
+      #     name: decode Provisioning Profiles
+      #     # context: zubair
+      #     command: base64 -D -o ~/Library/MobileDevice/Provisioning\ Profiles/gamer.mobileprovision <<< $gamer
+      # - run: ls ~/Library/MobileDevice/Provisioning\ Profiles/
       - run: security find-identity -v -p codesigning
+      - run: bundle install
+
       - run:
           name: Fastlane
-          command: bundle exec fastlane $FASTLANE_LANE
+          command: bundle exec fastlane $FASTLANE_LANE 
       - store_artifacts:
           path: output/Game.ipa
 
@@ -77,12 +87,12 @@ workflows:
   version: 2
   build-test-adhoc:
     jobs:
-      - build-and-test
+      # - build-and-test
       - beta:
           filters:
             branches:
               only: development
-          requires:
-            - build-and-test
+          # requires:
+          #   - build-and-test
 
 

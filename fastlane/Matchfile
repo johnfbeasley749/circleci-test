@@ -1,9 +1,9 @@
-git_url("https://github.com/johnfbeasley749/circleci-test.git")
+git_url("https://github.com/zubairghori/todo-circlce-ci.git")
 
 storage_mode("git")
 
-type("development") # The default type, can be: appstore, adhoc, enterprise or development
-clone_branch_directly(true)
+type("appstore") # The default type, can be: appstore, adhoc, enterprise or development
+
 app_identifier(["com.circleci.ios-games"])
 username("zubairghori93@gmail.com") # Your Apple Developer Portal username
 
